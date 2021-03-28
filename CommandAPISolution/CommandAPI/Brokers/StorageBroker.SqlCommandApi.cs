@@ -10,7 +10,10 @@ namespace CommandAPI.Brokers
     {
         public void CreateCommand(Command cmd)
         {
-            throw new NotImplementedException();
+            if (cmd == null)
+                throw new ArgumentNullException(nameof(cmd));
+            
+            CommandItems.Add(cmd);
         }
 
         public void DeleteCommand(Command cmd)
@@ -30,12 +33,9 @@ namespace CommandAPI.Brokers
 
         public void UpdateCommand(Command cmd)
         {
-            throw new NotImplementedException();
+            
         }
 
-        bool IStorageBroker.SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
+        bool IStorageBroker.SaveChanges() => SaveChanges() >= 0;
     }
 }

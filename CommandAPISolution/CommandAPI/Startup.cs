@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
+using System;
 
 namespace CommandAPI
 {
@@ -19,7 +21,16 @@ namespace CommandAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<StorageBroker>(opt => opt.UseNpgsql( Configuration.GetConnectionString("PostgreSqlConnection")));
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection"),
+                Username = Configuration["UserID"],
+                Password = Configuration["Password"]
+            };
+
+
+            services.AddDbContext<StorageBroker>(opt => opt.UseNpgsql(builder.ConnectionString));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
 
             services.AddScoped<IStorageBroker, StorageBroker>();
