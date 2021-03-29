@@ -36,7 +36,6 @@ namespace CommandAPI.Controllers
                 return NotFound();
             }
 
-
             return Ok(mapper.Map<CommandReadDto>(commandItem));
         }
         [HttpPost]
