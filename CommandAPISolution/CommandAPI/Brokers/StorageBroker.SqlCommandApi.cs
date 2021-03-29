@@ -18,7 +18,12 @@ namespace CommandAPI.Brokers
 
         public void DeleteCommand(Command cmd)
         {
-            throw new NotImplementedException();
+            if (cmd == null)
+            {
+                throw new ArgumentNullException(nameof(cmd));
+            }
+            CommandItems.Remove(cmd);
+
         }
 
         public IEnumerable<Command> GetAllCommands()

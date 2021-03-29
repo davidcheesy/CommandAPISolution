@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using Npgsql;
 using System;
 
@@ -31,7 +32,10 @@ namespace CommandAPI
 
             services.AddDbContext<StorageBroker>(opt => opt.UseNpgsql(builder.ConnectionString));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s =>
+            {
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
 
             services.AddScoped<IStorageBroker, StorageBroker>();
         }

@@ -2,6 +2,7 @@
 using CommandAPI.Brokers;
 using CommandAPI.DTOs;
 using CommandAPI.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,38 @@ namespace CommandAPI.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id}")]
+        public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
+        {
+            var commandModelFromRepo = storageBroker.GetCommandById(id);
+            if (commandModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            var commandToPatch = mapper.Map<CommandUpdateDto>(commandModelFromRepo);
+            patchDoc.ApplyTo(commandToPatch, ModelState);
+            if (!TryValidateModel(commandToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+            mapper.Map(commandToPatch, commandModelFromRepo);
+            storageBroker.UpdateCommand(commandModelFromRepo);
+            storageBroker.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCommand(int id)
+        {
+            var commandModelFromRepo = storageBroker.GetCommandById(id);
+            if (commandModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            storageBroker.DeleteCommand(commandModelFromRepo);
+            storageBroker.SaveChanges();
+            return NoContent();
+        }
 
     }
 }
