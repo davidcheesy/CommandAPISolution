@@ -28,7 +28,7 @@ namespace CommandAPI.Controllers
             => Ok(mapper.Map<IEnumerable<CommandReadDto>>(storageBroker.GetAllCommands()));
         
         [HttpGet("{id}", Name = "GetCommandById")]
-        public ActionResult<Command> GetCommandById(int id)
+        public ActionResult<CommandReadDto> GetCommandById(int id)
         {
             var commandItem = storageBroker.GetCommandById(id);
             if (commandItem == null)
