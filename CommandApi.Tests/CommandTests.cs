@@ -15,6 +15,8 @@ namespace CommandAPI.Tests
                 Platform = "xUnit",
                 CommandLine = "dotnet test"
             };
+
+            this.testCommand = testCommand;
         }
 
         [Fact]
