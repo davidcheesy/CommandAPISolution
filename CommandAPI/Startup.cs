@@ -41,8 +41,10 @@ namespace CommandAPI
 
             services.AddScoped<IStorageBroker, StorageBroker>();
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, StorageBroker context)
         {
+            context.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
