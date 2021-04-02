@@ -17,11 +17,13 @@ namespace CommandAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            
         }
 
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             var builder = new NpgsqlConnectionStringBuilder
             {
                 ConnectionString = Configuration.GetConnectionString("PostgreSqlConnection"),
