@@ -32,6 +32,8 @@ namespace CommandAPI
                 Password = Configuration["Password"]
             };
 
+
+            // Need to reconfigure Azure for PROD AAD
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             { 
                 opt.Audience = Configuration["ResourceId"];
