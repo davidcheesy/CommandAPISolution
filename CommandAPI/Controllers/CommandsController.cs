@@ -2,6 +2,7 @@
 using CommandAPI.Brokers;
 using CommandAPI.DTOs;
 using CommandAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,7 +27,8 @@ namespace CommandAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands() 
             => Ok(mapper.Map<IEnumerable<CommandReadDto>>(storageBroker.GetAllCommands()));
-        
+
+        [Authorize]
         [HttpGet("{id}", Name = "GetCommandById")]
         public ActionResult<CommandReadDto> GetCommandById(int id)
         {
